@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="QuestionNameSpace">
+
+   <resultMap id="questionMap" type="com.jang.qna.QuestionVO">
+      <id property="qSeq" column="q_seq" />
+      <result property="mSeq" column="m_seq" />
+      <result property="qText" column="q_text" />
+      <result property="qRegdate" column="q_regdate" />
+      <result property="qGubun" column="q_gubun" />
+      <result property="mNickname" column="m_nickname" />  
+       <result property="gubunDetail" column="code_list_gubun_detail" />   
+   </resultMap>
+   
+   <resultMap id="answerMap" type="com.jang.qna.AnswerVO">
+      <id property="aSeq" column="a_seq" />
+      <result property="qSeq" column="q_seq" />
+      <result property="atext" column="a_text" />
+      <result property="aRegdate" column="a_regdate" />
+   </resultMap>
+  
+   <resultMap id="memberMap" type="com.jang.qna.MemberVO">
+      <id property="mSeq" column="m_seq" />
+      <result property="mNickname" column="m_nickname" />
+      <result property="mFrom" column="m_from" />
+      <result property="mEmail" column="m_email" />
+      <result property="mAccountNumber" column="m_account_number" />
+      <result property="mBank" column="m_bank" />
+      <result property="mPhone" column="m_phone" />
+      <result property="mRegdate" column="m_regdate" />
+      <result property="mAddress" column="m_address" />
+      <result property="mLat" column="m_lat" />
+      <result property="mLng" column="m_lng" />
+      <result property="mDeleteYn" column="m_delete_yn" />
+      <result property="mGubun" column="m_gubun" />
+      <result property="mPush" column="m_push" />
+      <result property="mSipcode" column="m_sipcode" />
+      <result property="mAddressDetail" column="m_address_detail" />
+      <result property="mAccountHolder" column="m_account_holder" />
+      <result property="gradeGubun" column="grade_gubun" />
+   </resultMap>
+   
+   <resultMap id="code_listMap" type="com.jang.qna.Code_listVO">
+      <id property="codeListSeq" column="code_list_seq" />
+      <result property="codeListGubun" column="code_list_seq" />
+      <result property="codeListGubunDetail" column="code_list_gubun_detail" />
+      <result property="codeListEtc" column="code_list_etc" />
+   </resultMap>
+
+    <select id="questionSelect" resultMap="questionMap">
+      select m.m_Nickname, q.q_Text, cl.code_list_gubun_detail, q.q_regdate from question q, member m, code_list cl
+	where q.m_Seq = m.m_Seq and q.q_Gubun = cl.code_List_Gubun order by q.q_regdate desc
+    </select>
+
+     <select id="questionOne" resultMap="questionMap">
+     select q.q_seq, q.m_seq, q.q_text, q.q_regdate, m.m_nickname from question q, member m
+	where q.m_seq = m.m_seq and q.m_seq = ${value}
+    </select> 
+
+	<insert id="insertquestion" parameterType="com.jang.qna.QuestionVO">
+	insert into question(q_seq, m_seq, q_text, q_regdate, q_gubun)
+			values(qu_seq.nextval, 1, #{qText}, sysdate, 'QE')
+	</insert>
+  
+</mapper>   

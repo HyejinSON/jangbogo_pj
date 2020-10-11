@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memberNameSpace">
+
+    <resultMap id="memberMap" type="com.jang.member.MemberVO">
+        <id property="mSeq" column="m_seq" />
+        <result property="mAccountHolder" column="m_account_holder" />
+        <result property="mAccountNumber" column="m_account_number" />
+        <result property="mAddress" column="m_address" />
+        <result property="mAddressDetail" column="m_address_detail" />
+        <result property="mBank" column="m_bank" />
+        <result property="mDeleteYn" column="m_delete_yn" />
+        <result property="mEmail" column="m_email" />
+        <result property="mFrom" column="m_from" />
+        <result property="mGubun" column="m_gubun" />
+        <result property="mLat" column="m_lat" />
+        <result property="mLng" column="m_lng" />
+        <result property="mNickname" column="m_nickname" />
+        <result property="mPhone" column="m_phone" />
+        <result property="mPush" column="m_push" />
+        <result property="mRegdate" column="m_regdate" />
+        <result property="mZipcode" column="m_zipcode" />
+        <result property="gRadeGubun" column="grade_gubun" />
+    </resultMap>
+
+    <resultMap id="orderMap" type="com.jang.order.orderVO">
+        <id property="oSeq" column="o_seq" />
+        <result property="oTitle" column="o_title" />
+        <result property="oRegdate" column="o_regdate" />
+        <result property="oText" column="o_text" />
+        <result property="oPoint" column="o_point" />
+        <result property="oPicture" column="o_picture" />
+        <result property="mNickName" column="m_nickname" />
+        <result property="oAddress" column="o_address" />
+        <result property="oLat" column="o_lat" />
+        <result property="oLng" column="o_lng" />
+        <result property="kSeq" column="k_seq" />
+        <result property="orderGubun" column="order_gubun" />
+        <result property="codeListGubunDetail" column="code_list_gubun_detail" />
+    </resultMap>
+
+    <select id="memberMission" parameterType="int" resultMap="orderMap">
+        select o.o_regdate,o.o_text,o.o_point,c.code_list_gubun_detail, m.m_nickname
+        from order_board o, member m, code_list c
+        where o.k_seq=m.m_seq and o.order_gubun= c.code_list_gubun and o.k_seq = 3
+    </select>
+
+    <select id="memberOrder" resultMap="orderMap">
+        select o.o_point, o.o_seq,o.o_title,o.o_regdate, o.o_text,nvl(o.k_seq,null), c.code_list_gubun_detail
+        from order_board o, member m, code_list c
+        where o.k_seq=m.m_seq(+) and o.order_gubun= c.code_list_gubun
+    </select>
+
+    <select id="memberSerachMission" resultMap="orderMap">
+        select o.o_point, o.o_seq,o.o_title,o.o_regdate, o.o_text,o.k_seq
+        from order_board o, member m
+        where o.m_seq=m.m_seq and o.o_regdate between trunc(sysdate)-${value} and trunc(sysdate)
+    </select>
+
+    <select id="memberSerachOrder" resultMap="orderMap">
+        select o.o_point, o.o_seq,o.o_title,o.o_regdate, o.o_text,o.k_seq
+        from order_board o, member m
+        where o.m_seq=m.m_seq and o.o_regdate between trunc(sysdate)-${value} and trunc(sysdate)
+    </select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="freeNameSpace">
+    <resultMap id="freeMap" type="com.jang.free.FreeVO">
+        <id property="fSeq" column="f_seq" />
+        <result property="fTitle" column="f_title" />
+        <result property="fText" column="f_text" />
+        <result property="fRegdate" column="f_regdate" />
+        <result property="mNickName" column="m_nickname" />
+        <result property="fYn" column="f_yn" />
+    </resultMap>
+
+    <select id="freeAll" resultMap="freeMap">
+        select *
+        from free_board f,member m
+        where m.m_seq=f.m_seq
+    </select>
+
+    <select id="freeOne" parameterType="Integer" resultMap="freeMap">
+        select *
+        from free_board f,member m
+        where m.m_seq=f.m_seq and f.f_seq=${value}
+    </select>
+
+    <resultMap id="freeComMap" type="com.jang.free.FreeComVO">
+        <result property="rSeq" column="r_seq" />
+        <result property="rText" column="r_text" />
+        <result property="mNickName" column="m_nickname" />
+        <result property="fSeq" column="f_seq" />
+        <result property="rRegdate" column="f_regdate" />
+    </resultMap>
+
+    <select id="freeComAll" resultMap="freeComMap">
+        select *
+        from free_board_comment c,free_board f,member m
+        where c.f_seq= f.f_seq and m.m_seq = c.m_seq
+    </select>
+    <select id="freeComSelect" parameterType="Int" resultMap="freeComMap">
+        select *
+        from free_board_comment c,free_board f,member m
+        where c.f_seq= f.f_seq and m.m_seq = c.m_seq and c.f_seq=${value}
+    </select>
+
+</mapper>

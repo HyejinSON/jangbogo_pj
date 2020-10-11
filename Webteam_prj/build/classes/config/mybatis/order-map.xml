@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="orderNameSpace">
+    <resultMap id="orderMap" type="com.jang.order.orderVO">
+        <id property="oSeq" column="o_seq" />
+        <result property="oTitle" column="o_title" />
+        <result property="oRegdate" column="o_regdate" />
+        <result property="oText" column="o_text" />
+        <result property="oPoint" column="o_point" />
+        <result property="oPicture" column="o_picture" />
+        <result property="mNickName" column="m_nickname" />
+        <result property="oAddress" column="o_address" />
+        <result property="oLat" column="o_lat" />
+        <result property="oLng" column="o_lng" />
+        <result property="kSeq" column="k_seq" />
+        <result property="orderGubun" column="order_gubun" />
+        <result property="orderYn" column="ORDER_YN" />
+    </resultMap>
+
+    <select id="orderAll" resultMap="orderMap">
+        select o.o_seq,o.o_title,o.o_point,to_char(o.o_regdate, 'mm/dd HH24:MI') as o_regdate,m.m_nickname
+        from order_board o,member m
+        where m.m_seq=o.m_seq and o.order_gubun='OM' and o.order_yn='N'
+        order by o.o_regdate desc
+    </select>
+
+    <select id="orderOne" parameterType="Integer" resultMap="orderMap">
+        select *
+        from order_board o,member m
+        where m.m_seq=o.m_seq and o.o_seq=${value}
+    </select>
+
+    <insert id="orderInsert" parameterType="com.jang.order.orderVO">
+        insert into order_board
+        (o_seq,o_title,o_regdate,o_text,o_point,m_seq,o_address,o_lat,o_lng,order_gubun)
+        values
+        (test_seq.nextval,#{oTitle},sysdate,#{oText},#{oPoint},1,#{oAddress},#{oLat},#{oLng},'OM')
+    </insert>
+
+    <update id="orderUpdate" parameterType="com.jang.order.orderVO">
+        update order_board
+        set o_title=#{oTitle}, o_point=#{oPoint}, o_address=#{oAddress}, o_lat=#{oLat}, o_lng=#{oLng},o_text=#{oText}
+        where o_seq=#{oSeq}
+    </update>
+
+    <update id="orderDelete" parameterType="Integer">
+        update order_board
+        set order_yn='Y'
+        where o_seq=#{value} and order_yn='N'
+    </update>
+
+</mapper>

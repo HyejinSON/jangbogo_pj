@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <properties resource="config/mybatis/oracle.properties" />
+
+
+
+    <typeAliases>
+        <typeAlias alias="orderVO" type="com.jang.order.orderVO" />
+        <typeAlias alias="PointVO" type="com.jang.point.PointVO" />
+
+        <!-- 자유게시판 -->
+        <typeAlias alias="freeVO" type="com.jang.free.FreeVO" />
+        <!-- 자유게시판댓글 -->
+        <typeAlias alias="freeComVO" type="com.jang.free.FreeComVO" />
+
+        <typeAlias alias="QuestionVO" type="com.jang.qna.QuestionVO" />
+        <typeAlias alias="MemberVO" type="com.jang.member.MemberVO" />
+    </typeAliases>
+
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}" />
+                <property name="url" value="${url}" />
+                <property name="username" value="${id}" />
+                <property name="password" value="${pw}" />
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+        <mapper resource="config/mybatis/order-map.xml" />
+        <mapper resource="config/mybatis/point-recharge.xml" />
+        <mapper resource="config/mybatis/question-map.xml" />
+        <mapper resource="config/mybatis/member-map.xml" />
+        <!-- 자유게시판 관련 맵 -->
+        <mapper resource="config/mybatis/free-map.xml" />
+    </mappers>
+
+
+</configuration>
